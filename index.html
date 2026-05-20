@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>testdev - 예제 데이터</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        .subtitle {
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        main {
+            padding: 40px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #f8f9fa;
+            color: #555;
+            font-weight: 500;
+        }
+        tr:hover {
+            background: #f1f5f9;
+        }
+        .card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .json-raw {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: monospace;
+            white-space: pre;
+            font-size: 0.95em;
+        }
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #888;
+            font-size: 0.9em;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 9999px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 testdev 예제 데이터</h1>
+            <p class="subtitle">GitHub Pages로 배포된 JSON 예제 데이터</p>
+        </header>
+        
+        <main>
+            <div class="card">
+                <h2>👥 사용자 목록</h2>
+                <table id="userTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>나이</th>
+                            <th>상태</th>
+                            <th>도시</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>📋 메타데이터</h2>
+                <div id="metadata"></div>
+            </div>
+
+            <div class="card">
+                <h2>🔍 Raw JSON 데이터</h2>
+                <pre class="json-raw" id="rawJson"></pre>
+            </div>
+        </main>
+        
+        <footer>
+            testdev Repository • GitHub Pages • 2026
+        </footer>
+    </div>
+
+    <script>
+        // Fetch the example_data.json
+        fetch('example_data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Populate table
+                const tbody = document.querySelector('#userTable tbody');
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td><strong>${user.name}</strong></td>
+                        <td>${user.email}</td>
+                        <td>${user.age}</td>
+                        <td><span class="badge">${user.is_active ? '활성' : '비활성'}</span></td>
+                        <td>${user.address.city}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Metadata
+                const metaDiv = document.getElementById('metadata');
+                metaDiv.innerHTML = `
+                    <p><strong>총 사용자 수:</strong> ${data.metadata.total_users}명</p>
+                    <p><strong>생성일:</strong> ${data.metadata.generated_at}</p>
+                    <p><strong>버전:</strong> ${data.metadata.version}</p>
+                `;
+
+                // Raw JSON
+                document.getElementById('rawJson').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.querySelector('main').innerHTML += '<p style="color:red;">JSON 데이터를 불러오는데 실패했습니다.</p>';
+            });
+    </script>
+</body>
+</html>
