@@ -1,0 +1,33 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "김철수",
+      "email": "chulsoo@example.com",
+      "age": 28,
+      "is_active": true,
+      "tags": ["developer", "python"],
+      "address": {
+        "city": "서울",
+        "zipcode": "12345"
+      }
+    },
+    {
+      "id": 2,
+      "name": "이영희",
+      "email": "younghee@example.com",
+      "age": 32,
+      "is_active": false,
+      "tags": ["designer", "figma"],
+      "address": {
+        "city": "부산",
+        "zipcode": "67890"
+      }
+    }
+  ],
+  "metadata": {
+    "total_users": 2,
+    "generated_at": "2026-05-20",
+    "version": "1.0"
+  }
+}
